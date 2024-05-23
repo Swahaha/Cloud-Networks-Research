@@ -63,8 +63,8 @@ class CreatingDatabase:
         for f in os.listdir(local_path):
             print(f"Loading data from: {f}")
             sql_base = f"INSERT INTO {table_type}("
-            with open(local_path / f, 'r') as f:
-                csv_reader = csv.reader(f, delimiter=',')
+            with open(local_path / f, 'r', encoding='utf-8') as csvfile:
+                csv_reader = csv.reader(csvfile, delimiter=',')
                 # read in the header and add all the header values to the SQL query
                 # the header values must correspond to attribute fields in the DB
                 header = next(csv_reader)
