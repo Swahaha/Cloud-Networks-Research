@@ -1,24 +1,34 @@
 import sqlite3
 import pandas as pd
-import folium
+import networkx as nx
+import matplotlib.pyplot as plt
 
 # Connect to the SQLite database
 conn = sqlite3.connect('database/database_name.db')
 
-# Load city_points data into a DataFrame
-query = "SELECT * FROM city_points"
-df = pd.read_sql_query(query, conn)
+# Load data into DataFrames
+nodes_query = "SELECT * FROM phys_nodes WHERE country = 'US'"
+edges_query = "SELECT * FROM phys_nodes_conn"
+nodes_df = pd.read_sql_query(nodes_query, conn)
+edges_df = pd.read_sql_query(edges_query, conn)
 conn.close()
 
-# Create a map centered at an average location
-m = folium.Map(location=[df['city_latitude'].mean(), df['city_longitude'].mean()], zoom_start=2)
+# Create a NetworkX graph
+G = nx.Graph()
 
-# Add points to the map
-for idx, row in df.iterrows():
-    folium.Marker(
-        location=[row['city_latitude'], row['city_longitude']],
-        popup=f"{row['city_name']}, {row['state_province']}, {row['country_code']}"
-    ).add_to(m)
+# Add nodes with positions (latitude, longitude)
+for idx, row in nodes_df.iterrows():
+    G.add_node(row['node_name'], pos=(row['longitude'], row['latitude']))
 
-# Save the map to an HTML file
-m.save('city_points_map.html')
+# Add edges between nodes, but only if both nodes exist in the graph
+for idx, row in edges_df.iterrows():
+    if row['from_node'] in G.nodes and row['to_node'] in G.nodes:
+        G.add_edge(row['from_node'], row['to_node'])
+
+# Draw the graph
+pos = nx.get_node_attributes(G, 'pos')
+
+plt.figure(figsize=(15, 10))
+nx.draw(G, pos, with_labels=False, node_size=50, node_color='blue', font_size=8)
+plt.title("Internet PoPs in the US with Network Edges")
+plt.show()
