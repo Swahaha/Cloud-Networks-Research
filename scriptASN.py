@@ -31,7 +31,7 @@ edge_count = defaultdict(int)
 
 for idx, row in asn_conn_df.iterrows():
     if row['asn1'] in G.nodes and row['asn2'] in G.nodes:
-        if edge_count[row['asn1']] < 3 and edge_count[row['asn2']] < 3:
+        if edge_count[row['asn1']] < 5 and edge_count[row['asn2']] < 5:
             G.add_edge(row['asn1'], row['asn2'], relationship=row['relationship_type'])
             edge_count[row['asn1']] += 1
             edge_count[row['asn2']] += 1
