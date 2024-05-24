@@ -3,6 +3,10 @@ database/
 unprocessed/
 plots/
 
+
+# CS+ specific
+databaseworking/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
