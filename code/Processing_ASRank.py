@@ -135,10 +135,9 @@ class ProcessingASRank:
                 new_row = [asn, org_name, self.data_source, self.asof_date]
                 self.asn_org_list.append(new_row)
 
-    def save_csv(self, data, header, f_name):
-        print(f"\tSaving to {f_name}.")
-        with open(f_name, 'w') as f:
-            csv_writer = csv.writer(f, delimiter=',')
+    def save_csv(self, data, header, file_path):
+        with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+            csv_writer = csv.writer(csvfile)
             csv_writer.writerow(header)
             for d in data:
                 csv_writer.writerow(d)
