@@ -5,20 +5,15 @@ import matplotlib.pyplot as plt
 
 image_path = 'HEtest.png'
 image = cv2.imread(image_path)
-
 hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
 lower_red1 = np.array([0, 70, 50])
 upper_red1 = np.array([10, 255, 255])
 lower_red2 = np.array([170, 70, 50])
 upper_red2 = np.array([180, 255, 255])
-
 red_mask1 = cv2.inRange(hsv_image, lower_red1, upper_red1)
 red_mask2 = cv2.inRange(hsv_image, lower_red2, upper_red2)
 red_mask = cv2.bitwise_or(red_mask1, red_mask2)
-
 contours, _ = cv2.findContours(red_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
 nodes = []
 for contour in contours:
     if cv2.contourArea(contour) > 5:
@@ -29,10 +24,8 @@ for contour in contours:
             nodes.append((cX, cY))
 
 gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
 edges = cv2.Canny(gray_image, 50, 150, apertureSize=3)
-
-lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold=30, minLineLength=30, maxLineGap=20)
+lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold=20, minLineLength=20, maxLineGap=30)
 
 def find_nearest_node(point, nodes, tolerance=20):
     for node in nodes:
@@ -50,10 +43,8 @@ if lines is not None:
             edges_list.append((node1, node2))
 
 G = nx.Graph()
-
 for node in nodes:
     G.add_node(node)
-
 for edge in edges_list:
     G.add_edge(edge[0], edge[1])
 
