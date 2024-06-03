@@ -61,7 +61,7 @@ def find_nearest_nodes(city_positions, circle_positions, threshold=50):
                 
     return matched_positions
 
-# Extract edges from the PDF
+# Extract edges from the PDF  --> look at one specific line segment.
 def extract_edges(pdf_path):
     edges = []
     for page_layout in extract_pages(pdf_path):
