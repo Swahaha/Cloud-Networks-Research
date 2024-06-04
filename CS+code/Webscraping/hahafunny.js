@@ -1,3 +1,5 @@
+// Run through dev console on https://www.globalbackbone.tisparkle.com/
+
 $( document ).ready(function() {
 
     $("#turn").bind("touchmove", function(e){
@@ -75,6 +77,7 @@ $( document ).ready(function() {
     var dashed_polyline = {path: 'M 0,-1 0,1', strokeOpacity: 1, scale: 2.5};
     var dashed_polyline_off = {path: 'M 0,-1 0,1', strokeOpacity: 0.2, scale: 2.5};
 
+    // I only edited this function, the rest is identical to the website's main.js
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 4,
